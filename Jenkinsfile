@@ -2,7 +2,7 @@ node {
   def project = 'applariat-sandbox'
   def appName = 'gceme'
   def feSvcName = "${appName}-frontend"
-  def imageTag = "us.gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+  def imageTag = "docker.applariat.io:5000/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
   checkout scm
 
