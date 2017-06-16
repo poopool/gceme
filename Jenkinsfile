@@ -15,8 +15,8 @@ node {
   stage 'Push image to registry'
   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'apl_registry',
                             usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                docker login -u ${USERNAME} -p ${PASSWORD} docker.applariat.io:5000
-                docker push ${imageTag}
+                sh ('docker login --username ${USERNAME} --password ${PASSWORD} docker.applariat.io:5000')
+                sh ('docker push ${imageTag}')
             }
 
 
