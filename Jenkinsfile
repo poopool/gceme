@@ -13,7 +13,12 @@ node {
   sh("docker run ${imageTag} go test")
 
   stage 'Push image to registry'
-  sh("gcloud docker push ${imageTag}")
+  withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'apl_registry',
+                            usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                docker login -u ${USERNAME} -p ${PASSWORD}
+                docker push ${imageTag}
+            }
+
 
   // stage "Deploy Application"
   // switch (env.BRANCH_NAME) {
