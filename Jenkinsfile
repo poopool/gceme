@@ -5,19 +5,21 @@ node {
   def imageTag = "docker.applariat.io:5000/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
   checkout scm
-
-  stage 'Build image'
-  sh("docker build -t ${imageTag} .")
-
-  stage 'Run Go tests'
-  sh("docker run ${imageTag} go test")
-
-  stage 'Push image to registry'
   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'apl_registry',
                             usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                sh ('docker login --username ${USERNAME} --password ${PASSWORD} docker.applariat.io:5000')
-                sh ('docker push ${imageTag}')
-            }
+
+  // stage 'Build image'
+  sh("docker build -t ${imageTag} .")
+
+  // stage 'Run Go tests'
+  sh("docker run ${imageTag} go test")
+
+  // stage 'Push image to registry'
+
+                sh ("docker login --username ${USERNAME} --password ${PASSWORD} docker.applariat.io:5000")
+                sh ("echo pushing ${imageTag}")
+                sh ("docker push ${imageTag}")
+  }
 
 
   // stage "Deploy Application"
